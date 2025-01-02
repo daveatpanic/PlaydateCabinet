@@ -1,4 +1,4 @@
-# PlaydateCabinet
+# Playdate Cabinet
 CAD and code for the Playdate Cabinet
 
 Coming soon!
