@@ -6,3 +6,5 @@ CAD and code for the Playdate Cabinet
 	cabinet.skp - SketchUp CAD file for cabinet
 
 _Playdate Cabinet is a side project, not a Panic product! Please email dave@panic.com with questions, not Playdate support!_
+
+![Playdate cabinets at Fantastic Arcade 2024](IMG_8115.webp "Cabinets")
