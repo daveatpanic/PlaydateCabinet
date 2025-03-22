@@ -1,3 +1,5 @@
+#ifndef stream_h
+#define stream_h
 
 #include <stdint.h>
 #include "constants.h"
@@ -106,3 +108,5 @@ void stream_reset();
 void stream_sendButtonPress(int btn);
 void stream_sendButtonRelease(int btn);
 void stream_sendCrankChange(float angle_change);
+
+#endif // stream_h
