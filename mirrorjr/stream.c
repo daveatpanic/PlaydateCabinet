@@ -570,8 +570,8 @@ void stream_sendAccelChange(double x, double y, double z)
 	ser_writeNonblocking(buf, strlen(buf));
 }
 
-void stream_sendCrankEnable(bool enable)
+void stream_sendCrankDocked(bool docked)
 {
-	const char* msg = enable ? "enablecrank\r\n" : "disablecrank\r\n";
+	const char* msg = docked ? "dockcrank 1\r\n" : "dockcrank 0\r\n";
 	ser_writeNonblocking(msg, strlen(msg));
 }

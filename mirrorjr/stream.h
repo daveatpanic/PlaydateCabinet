@@ -111,5 +111,6 @@ void stream_reset();
 void stream_sendButtonPress(int btn);
 void stream_sendButtonRelease(int btn);
 void stream_sendCrankChange(float angle_change);
+void stream_sendCrankDocked(bool flag);
 
 #endif // stream_h

@@ -92,6 +92,7 @@ void controls_scan()
 	static float lastangle = -1;
 	float crankangle = -1;
 	
+	// rate limit the crank
 	static int limit = 0;
 	
 	if ( ++limit < 3 )
@@ -103,20 +104,19 @@ void controls_scan()
 	{
 		int b = serReadByte(crank);
 		
-		if ( readpos < 5 && (isdigit(b) || b == '.') )
-			readbuf[readpos++] = b;
-		else
+		if ( b == '\n' )
 		{
-			if ( b == '\n' )
-			{
+			if ( isdigit(b) )
 				crankangle = atof(readbuf);
-				//printf("read %f", crankangle);
-			}
-			else
-				; //printf("read %c, discarding crank garbage %.*s\n", b, readpos, readbuf);
+			else if ( readpos == 4 && strncmp(readbuf, "out", 3) == 0 )
+				stream_sendCrankDocked(true);
+			else if ( readpos == 3 && strncmp(readbuf, "in", 2) == 0 )
+				stream_sendCrankDocked(false);
 
-			readpos = 0;
+			//printf("read %f", crankangle);
 		}
+		else if ( readpos < 5 )
+			readbuf[readpos++] = b;
 	}
 	
 	if ( crankangle != -1 )
@@ -128,7 +128,9 @@ void controls_scan()
 			if ( change > 180 ) change -= 360;
 			else if ( change < -180 ) change += 360;
 			
-			stream_sendCrankChange(change);
+			if ( change != 0 )
+				stream_sendCrankChange(change);
+			
 			// printf("sending crank change %f\n", change);
 		}
 		
