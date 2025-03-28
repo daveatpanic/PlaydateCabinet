@@ -106,7 +106,7 @@ void controls_scan()
 		
 		if ( b == '\n' )
 		{
-			if ( isdigit(b) )
+			if ( isdigit(readbuf[0]) )
 				crankangle = atof(readbuf);
 			else if ( readpos == 4 && strncmp(readbuf, "out", 3) == 0 )
 				stream_sendCrankDocked(true);
