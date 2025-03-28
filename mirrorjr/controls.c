@@ -114,6 +114,7 @@ void controls_scan()
 				stream_sendCrankDocked(false);
 
 			//printf("read %f", crankangle);
+			readpos = 0;
 		}
 		else if ( readpos < 5 )
 			readbuf[readpos++] = b;
