@@ -12,8 +12,8 @@ bool i2cread(int addr, uint8_t* buf, int count)
   for ( i = 0; i < count && Wire.available(); ++i )
   {
     buf[i] = Wire.read();
-    // Serial.print(buf[i], HEX);
-    // Serial.print(" ");
+ //    Serial.print(buf[i], HEX);
+ //    Serial.print(" ");
   }
 
   if ( i < count )
@@ -66,8 +66,8 @@ bool tryCrank(int addr)
 }
 
 
-#define CRANK1_POWER 2
-#define CRANK2_POWER 3
+#define CRANK1_POWER 3
+#define CRANK2_POWER 2
 
 #define CRANK1_ADDR 0x5e //if SDA high at boot
 #define CRANK2_ADDR 0x1f //if SDA low at boot
@@ -136,12 +136,12 @@ struct crank crank1 = { .addr = CRANK1_ADDR, .startangle = -1 };
 struct crank crank2 = { .addr = CRANK2_ADDR, .startangle = -1 };
 
 #define CRANK_SMOOTH_THRESHOLD 10 // if x or y changes more than this amount, don't smooth value
-#define CRANK_SMOOTHING 10
+#define CRANK_SMOOTHING 10 // but for smaller movement we need to average out the noise
 
 // below this amount of angle change, system reports no change
 #define CRANK_THRESHOLD 0.8f
 
-// only send angle every once every n times
+// rate limit our reporting so we don't overwhelm the poor Pi
 #define REPORT_PERIOD 50
 
 bool sampleCrankSensor(struct crank* crank)
@@ -195,6 +195,7 @@ void updateCrank(struct crank* crank)
         Serial.println("handle in");
         Serial1.println("in");
         crank->startangle = angle;
+        crank->lastangle = 0;
       }
 
       angle -= crank->startangle;
