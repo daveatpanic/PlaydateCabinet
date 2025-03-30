@@ -1,7 +1,7 @@
 # Playdate Cabinet
 CAD and code for the Playdate Cabinet
 
-	mirrorjr/ - Mirror port for the Raspberry Pi
+	mirrorpi/ - Mirror port for the Raspberry Pi
 	crank/ - KiCad files for crank sensor PCB, Arduino sketch for Seeeduino Xiao controller
 	cabinet.skp - SketchUp CAD file for cabinet
 
