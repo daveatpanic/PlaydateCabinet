@@ -1,0 +1,12 @@
+{
+  "extension" : {
+    "identifier" : "com.panic.Playdate",
+    "name" : "Playdate"
+  },
+  "extensionTemplate" : "simulator",
+  "extensionValues" : {
+    "playdate.build-type" : "make",
+    "playdate.product-name" : "3DLibrary"
+  },
+  "identifier" : "98EFB50B-1584-4BE0-8131-F088F7EC329F"
+}
