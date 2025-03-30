@@ -1,2 +1,4 @@
 .DS_Store
 *.o
+crank/sensor1/sensor-backups
+crank/sensor2/sensor2-backups
