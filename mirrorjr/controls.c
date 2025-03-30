@@ -31,7 +31,7 @@ enum buttons
 };
 
 int pi = 0;
-const unsigned int gpios[] = { 22, 23, 4, 27, 24, 25, 5 };
+const unsigned int gpios[] = { 4, 27, 22, 23, 24, 25, 5 };
 unsigned int crank = 0;
 
 bool controls_init()

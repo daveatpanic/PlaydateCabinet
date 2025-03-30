@@ -538,7 +538,7 @@ void stream_reset()
 	RingBuffer_reset(&serialbuf);
 }
 
-static const char keynames[] = "lrudbam";
+static const char keynames[] = "udlrbam";
 
 void stream_sendButtonPress(int btn)
 {
