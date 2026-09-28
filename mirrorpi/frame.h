@@ -15,7 +15,7 @@
 #define LCD_COLUMNS 400
 #define LCD_ROWSIZE (LCD_COLUMNS/8)
 
-bool frame_init(SDL_Window* window);
+bool frame_init(SDL_Window* window, const SDL_Rect* viewport);
 void frame_begin(uint32_t timestamp);
 void frame_setRow(unsigned int row, const uint8_t* data);
 void frame_end();

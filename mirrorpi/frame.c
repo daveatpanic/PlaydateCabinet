@@ -35,8 +35,10 @@ uint32_t palette[16] = {
 
 int render_w = LCD_COLUMNS;
 int render_h = LCD_ROWS;
+SDL_Rect viewport_rect;
+bool has_viewport = false;
 
-bool frame_init(SDL_Window* window)
+bool frame_init(SDL_Window* window, const SDL_Rect* viewport)
 {
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
@@ -58,6 +60,20 @@ bool frame_init(SDL_Window* window)
 	{
 		printf("video init failed: %s", SDL_GetError());
 		return false;
+	}
+
+	if ( viewport != NULL )
+	{
+		int rw, rh;
+		viewport_rect = *viewport;
+		has_viewport = true;
+
+		if ( SDL_GetRendererOutputSize(renderer, &rw, &rh) != 0 ||
+			viewport_rect.x > rw - viewport_rect.w || viewport_rect.y > rh - viewport_rect.h )
+		{
+			printf("invalid viewport\n");
+			return false;
+		}
 	}
 	
 	framebuffer32bit = calloc(1, LCD_ROWS * LCD_COLUMNS * 4);
@@ -168,14 +184,18 @@ void frame_present()
 
 	SDL_UpdateTexture(sdl_texture, NULL, framebuffer32bit, render_w * 4);
 
-	int rw, rh;
-	SDL_GetRendererOutputSize(renderer, &rw, &rh);
-
 	SDL_Rect src_rect = { 0, 0, render_w, render_h };
-//	SDL_Rect dst_rect = { 0, 0, rw, rh };
-	SDL_Rect dst_rect = { 40, 0, 1200, 720 }; // XXX don't hardcode
-
-	SDL_RenderCopy(renderer, sdl_texture, &src_rect, &dst_rect);
+	if ( has_viewport )
+	{
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, sdl_texture, &src_rect, &viewport_rect);
+	}
+	else
+	{
+		SDL_Rect dst_rect = { 40, 0, 1200, 720 }; // XXX don't hardcode
+		SDL_RenderCopy(renderer, sdl_texture, &src_rect, &dst_rect);
+	}
 	SDL_RenderPresent(renderer);
 }
 
@@ -246,4 +266,3 @@ void frame_setRow(unsigned int rowNum, const uint8_t* row)
 	//LOG("row %i\n", rowNum);
 	memcpy(framebuffer1bit + (rowNum-1)*LCD_ROWSIZE, row, LCD_ROWSIZE);
 }
-

@@ -21,7 +21,9 @@
 #include "audio.h"
 #include "stream.h"
 #include "serial.h"
+#ifndef MIRRORPI_NO_CONTROLS
 #include "controls.h"
+#endif
 
 bool checkExit()
 {
@@ -64,8 +66,37 @@ static void droproot()
 
 int get_ip_address(char *ip_buffer);
 
+static bool parseViewport(const char* argument, SDL_Rect* viewport)
+{
+	char trailing;
+
+	if ( sscanf(argument, "--viewport=%d,%d,%d,%d%c", &viewport->x, &viewport->y, &viewport->w, &viewport->h, &trailing) != 4 )
+		return false;
+
+	return viewport->x >= 0 && viewport->y >= 0 && viewport->w > 0 && viewport->h > 0;
+}
+
 int main(int argc, const char * argv[])
 {
+	SDL_Rect viewport;
+	const SDL_Rect* viewport_ptr = NULL;
+
+	if ( argc == 2 )
+	{
+		if ( !parseViewport(argv[1], &viewport) )
+		{
+			fprintf(stderr, "usage: %s [--viewport=x,y,width,height]\n", argv[0]);
+			return -1;
+		}
+
+		viewport_ptr = &viewport;
+	}
+	else if ( argc != 1 )
+	{
+		fprintf(stderr, "usage: %s [--viewport=x,y,width,height]\n", argv[0]);
+		return -1;
+	}
+
 	if ( SDL_InitSubSystem(SDL_INIT_VIDEO) != 0 )
 	{
 		printf("video init failed: %s", SDL_GetError());
@@ -99,11 +130,13 @@ int main(int argc, const char * argv[])
 
 	SDL_ShowCursor(SDL_DISABLE);
 	
+	#ifndef MIRRORPI_NO_CONTROLS
 	if ( !controls_init() )
 	{
 		printf("error initializing control i/o\n");
 		return -1;
 	}
+	#endif
 	
 	if ( !stream_init() )
 	{
@@ -111,7 +144,7 @@ int main(int argc, const char * argv[])
 		return -1;
 	}
 	
-	if ( !frame_init(window) )
+	if ( !frame_init(window, viewport_ptr) )
 		return -1;
 	
 	audio_init();
@@ -178,7 +211,9 @@ int main(int argc, const char * argv[])
 			}
 			
 			stream_process();
+			#ifndef MIRRORPI_NO_CONTROLS
 			controls_scan();
+			#endif
 			usleep(1000);
 		}
 		

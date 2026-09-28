@@ -5,6 +5,10 @@ CAD and code for the Playdate Cabinet
 	crank/ - KiCad files for crank sensor PCB, Arduino sketch for Seeeduino Xiao controller
 	cabinet.skp - SketchUp CAD file for cabinet
 
+Build the cabinet version with `make -C mirrorpi rpi`, or the physical-Playdate-controller version with `make -C mirrorpi rpi-no-controls`. The latter accepts `--viewport=x,y,width,height` for an optional destination rectangle, for example:
+
+	./mirrorpi/mirror-no-controls --viewport=40,48,640,384
+
 BOM
 
 	Display: Scepter ‎E205W-16003R 20" 1600x900 75Hz Ultra Thin LED Monitor
