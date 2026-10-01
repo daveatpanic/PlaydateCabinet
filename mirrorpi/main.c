@@ -248,7 +248,7 @@ void* copySerialToRingbuffer(void* ud)
 		}
 		else if ( n < 0 )
 		{
-			printf("ser_read returned %i errno=%i\n", n, errno);
+			printf("ser_read returned %i errno=%i\n", (int)n, errno);
 			break;
 		}
 	}
