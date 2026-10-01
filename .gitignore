@@ -1,4 +1,10 @@
 .DS_Store
 *.o
+*.o.d
+*.lst
+*.dylib
+*.dylib.dSYM
+*.map
+*.elf
 crank/sensor1/sensor-backups
 crank/sensor2/sensor2-backups
